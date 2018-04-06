@@ -1,0 +1,33 @@
+version: 1.0
+description: DOFormation example
+parameters:
+  volume_size:
+    type: string
+    default: 20
+  message:
+    type: string
+    default: "Hello world"
+resources:
+  server:
+    type: DO::Droplet::Server
+    properties:
+      size: 2c_4g
+      name: doformation
+      block_storage:
+        size: 20
+      region: nyc3
+      private_network: true
+      backups: true
+      ipv6: true
+      user_data:
+        type: RAW
+        str_replace:
+          template: |
+            #!/bin/bash
+            echo MESS >> start_up.log
+          parameters:
+            MESS:
+              get_param: message
+      monitoring: true
+      key_name:
+        get_param: key_name
